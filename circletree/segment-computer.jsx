@@ -73,9 +73,9 @@ module.exports = {
 
   getSVGPath: function(pts, options) {
     var drawProps = {
-      fill: options.fill || options.color(options.depth || 0),
-      stroke: "transparent",
-      strokeWidth: 2*(options.spacing || 1)
+      fill: options.fill || options.color.fill(options.depth || 0),
+      stroke: options.stroke || options.color.stroke(options.depth || 0),
+      strokeWidth: (options.spacing/4 || 1)
     };
 
     if (pts === false) {

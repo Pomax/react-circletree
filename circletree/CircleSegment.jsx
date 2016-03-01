@@ -96,7 +96,8 @@ var CircleSegment = React.createClass({
             r1: r1,
             r2: r2,
             end: this.state.startAngle + this.state.angleDelta - this.state.angleOffset,
-            fill: this.props.color(type)
+            fill: this.props.color.fill(type),
+            stroke: this.props.color.stroke(type)
           });
       return <CircleSegment {...leafProps} key={type}/>;
     });
