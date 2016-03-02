@@ -2,9 +2,10 @@
   "name": "react-circletree",
   "version": "1.0.0",
   "description": "A circle tree component for React applications",
-  "main": "index.js",
+  "main": "circletree.js",
   "scripts": {
-    "start": "webpack"
+    "build": "webpack",
+    "start": "webpack --config example.config.js"
   },
   "repository": {
     "type": "git",
