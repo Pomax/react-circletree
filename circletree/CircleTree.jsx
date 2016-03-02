@@ -52,9 +52,7 @@ var CircleTree = React.createClass({
     var viewBox = [bbox.x, bbox.y, bbox.w, bbox.h].join(' ');
     return (
       <svg style={style} width={bbox.w} height={bbox.h} viewBox={viewBox}>
-        <g transform={["translate(",0,",",0,")"].join('')}>
-        { this.state.segments }
-        </g>
+      { this.state.segments }
       </svg>
     );
   }

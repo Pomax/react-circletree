@@ -12,6 +12,8 @@ module.exports = {
     if(v===categories.CR) return 'royalblue';
     if(v===categories.CL) return 'limegreen';
 
+    if(v==='highlight') return 'rgba(255,200,0,0.3)';
+
     return "transparent";
   },
 

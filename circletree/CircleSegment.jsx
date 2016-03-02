@@ -25,9 +25,17 @@ var CircleSegment = React.createClass({
   },
 
   componentWillMount() {
+    this.highlights = {
+      highlight: this.highlight,
+      restore: this.restore,
+      toggle: this.toggle,
+      color: this.props.color
+    };
+
     this.setState({
       label: this.getLabel(),
-      children: this.props.leaf? null : this.setupChildren()
+      children: this.props.leaf? null : this.setupChildren(),
+      underlay: (this.props.depth !== 1) ? null : this.getUnderlay()
     });
   },
 
@@ -69,7 +77,7 @@ var CircleSegment = React.createClass({
 
     // generate the set of child segments
     return keys.map( (label, position) => {
-      var childProps = Object.assign({}, props, {
+      var childProps = Object.assign({}, props, this.highlights, {
         label: label,
         id: position,
         data: data[label]
@@ -92,12 +100,13 @@ var CircleSegment = React.createClass({
           spacing = this.props.spacing,
           r1 = radius + spacing + pos * (leafSpacing + leafRadius),
           r2 = r1 + leafRadius,
-          leafProps = Object.assign({}, baseProps, {
+          leafProps = Object.assign({}, baseProps, this.highlights, {
             r1: r1,
             r2: r2,
             end: this.state.startAngle + this.state.angleDelta - this.state.angleOffset,
             fill: this.props.color.fill(type),
-            stroke: this.props.color.stroke(type)
+            stroke: this.props.color.stroke(type),
+            label: type
           });
       return <CircleSegment {...leafProps} key={type}/>;
     });
@@ -106,23 +115,61 @@ var CircleSegment = React.createClass({
   getPath() {
     return computer.getSVGPath(this.state.points, Object.assign({}, this.props, {
       angleDelta: this.state.angleDelta
-    }));
-  },
-
-  toggle() {
-    if (this.props.depth === 1) {
-      console.log("do things based on "+this.props.label);
-    }
-  },
-
-  restore() {
-    if (this.props.depth === 1) {
-      this.setState({ isOffset: false });
-    }
+    }),{
+      onMouseEnter: this.highlight,
+      onMouseLeave: this.restore,
+      onClick: this.toggle
+    });
   },
 
   highlight() {
-    if (this.props.depth === 1) {
+    var path = this.refs.path;
+    path.setAttribute("data-old-fill", path.getAttribute("fill"));
+    path.setAttribute("fill", this.props.color.fill('highlight'));
+    if (this.props.highlight) { this.props.highlight(); }
+  },
+
+  restore() {
+    var path = this.refs.path;
+    path.setAttribute("fill", path.getAttribute("data-old-fill"));
+    if (this.props.restore) { this.props.restore(); }
+  },
+
+  toggle() {
+    console.log(this.props.label);
+    if (this.props.toggle) { this.props.toggle(); }
+  },
+
+  getUnderlay() {
+    var p = this.state.points.slice(),
+        p1 = p[0], p2 = p[1], p3 = p[2], p4 = p[3],
+        dx, dy,
+        // TODO: FIXME: this number needs to be based on the actual max depth of this slice
+        magicNumber = 3;
+
+    dx = p3.x - p2.x;
+    dy = p3.y - p2.y;
+    p[2] = { x: p2.x + magicNumber*dx, y: p2.y + magicNumber*dy};
+
+    dx = p4.x - p1.x,
+    dy = p4.y - p1.y,
+    p[3] = { x: p1.x + magicNumber*dx, y: p1.y + magicNumber*dy};
+
+    return computer.getSVGPath(p, Object.assign({}, this.props, {
+      angleDelta: this.state.angleDelta,
+      fill: "transparent",
+      stroke: "transparent"
+    }), {
+      onMouseEnter: this.slideOut
+    });
+  },
+
+  slideBack() {
+    this.setState({ isOffset: false });
+  },
+
+  slideOut() {
+    if (this.props.depth===1) {
       this.setState({ isOffset: true });
     }
   },
@@ -131,8 +178,9 @@ var CircleSegment = React.createClass({
     var path = this.getPath();
     var offset = this.state.isOffset ? "translate(" + [this.state.offset.x, this.state.offset.y].join(',') + ")" : null;
     return (
-      <g transform={offset} onMouseEnter={this.highlight} onMouseLeave={this.restore} onClick={this.toggle}>
-        { path }
+      <g transform={offset} onMouseEnter={this.slideOut} onMouseLeave={this.slideBack}>
+        { this.state.underlay }
+        { React.cloneElement(path, {ref: "path"}) }
         { this.state.label }
         { this.state.children }
       </g>

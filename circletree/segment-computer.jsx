@@ -71,7 +71,7 @@ module.exports = {
     };
   },
 
-  getSVGPath: function(pts, options) {
+  getSVGPath: function(pts, options, reactProps) {
     var drawProps = {
       fill: options.fill || options.color.fill(options.depth || 0),
       stroke: options.stroke || options.color.stroke(options.depth || 0),
@@ -98,11 +98,9 @@ module.exports = {
           'A', r2, r2, 0, sweep, ANTICLOCKWISE, p4.x, p4.y,
           'z'
         ].join(' '),
-        pathProps = Object.assign({}, drawProps, {
-          d: d
-        });
+        pathProps = Object.assign({}, drawProps, reactProps, { d:d });
 
-    return <path {...pathProps}/>;
+    return <path {...pathProps} />;
   },
 
   getSVGLabel: function(options, center) {
