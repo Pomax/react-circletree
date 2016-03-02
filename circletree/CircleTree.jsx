@@ -1,11 +1,13 @@
 var React = require('react');
 var CircleSegment = require('./CircleSegment.jsx');
 var BBox = require('./bbox');
+var differ = require('./differ');
 
 var defaultProps = {
   data: {},
   radius: 80,
   spacing: 3,
+  strokeWidth: 1,
   leafRadius: 7,
   leafSpacing: 2
 };
@@ -24,13 +26,23 @@ var CircleTree = React.createClass({
   },
 
   componentWillMount() {
-    this.setState({
-      segments: this.formSegments()
-    });
+    this.buildContent();
+  },
+
+  componentDidUpdate: function(props, state) {
+    if(differ(props, this.props, defaultProps)) {
+      this.buildContent();
+    }
   },
 
   updateBBox(bbox) {
     this.setState({ bbox: this.state.bbox.expand(bbox) });
+  },
+
+  buildContent() {
+    this.setState(Object.assign({
+      segments: this.formSegments()
+    }));
   },
 
   formSegments() {
@@ -48,7 +60,6 @@ var CircleTree = React.createClass({
   render() {
     var style = { overflow: "visible" };
     var bbox = this.state.bbox;
-    window.bbox = bbox;
     var viewBox = [bbox.x, bbox.y, bbox.w, bbox.h].join(' ');
     return (
       <svg style={style} width={bbox.w} height={bbox.h} viewBox={viewBox}>

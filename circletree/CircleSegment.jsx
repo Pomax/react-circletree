@@ -1,18 +1,23 @@
 var React = require('react');
 var computer = require('./segment-computer.jsx');
+var differ = require('./differ');
 
 var defaultProps = {
   // inner and outer radius, and segment padding
   r1: 0,
   r2: 1,
   spacing: 1,
+  strokeWidth: 1,
   // start and end angle
   start: 0,
   end: computer.tau,
   // total number of segments, and id of this segment
   depth: 0,
   id: 0,
-  total: 1
+  total: 1,
+  // leaf settings
+  leafRadius: 7,
+  leafSpacing: 2
 };
 
 var CircleSegment = React.createClass({
@@ -24,6 +29,14 @@ var CircleSegment = React.createClass({
     return computer.getSegmentInformation(this.props);
   },
 
+  buildContent() {
+    this.setState(Object.assign({
+      label: this.getLabel(),
+      children: this.props.leaf? null : this.setupChildren(),
+      underlay: (this.props.depth !== 1) ? null : this.getUnderlay()
+    }, this.getInitialState()));
+  },
+
   componentWillMount() {
     this.highlights = {
       highlight: this.highlight,
@@ -32,11 +45,13 @@ var CircleSegment = React.createClass({
       color: this.props.color
     };
 
-    this.setState({
-      label: this.getLabel(),
-      children: this.props.leaf? null : this.setupChildren(),
-      underlay: (this.props.depth !== 1) ? null : this.getUnderlay()
-    });
+    this.buildContent();
+  },
+
+  componentDidUpdate: function(props, state) {
+    if(differ(props, this.props, defaultProps)) {
+      this.buildContent();
+    }
   },
 
   componentDidMount() {
@@ -100,6 +115,7 @@ var CircleSegment = React.createClass({
           spacing = this.props.spacing,
           r1 = radius + spacing + pos * (leafSpacing + leafRadius),
           r2 = r1 + leafRadius,
+
           leafProps = Object.assign({}, baseProps, this.highlights, {
             r1: r1,
             r2: r2,
@@ -108,6 +124,7 @@ var CircleSegment = React.createClass({
             stroke: this.props.color.stroke(type),
             label: type
           });
+
       return <CircleSegment {...leafProps} key={type}/>;
     });
   },
@@ -145,7 +162,7 @@ var CircleSegment = React.createClass({
         p1 = p[0], p2 = p[1], p3 = p[2], p4 = p[3],
         dx, dy,
         // TODO: FIXME: this number needs to be based on the actual max depth of this slice
-        magicNumber = 3;
+        magicNumber = 4;
 
     dx = p3.x - p2.x;
     dy = p3.y - p2.y;

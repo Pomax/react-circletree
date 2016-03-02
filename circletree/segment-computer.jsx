@@ -75,7 +75,7 @@ module.exports = {
     var drawProps = {
       fill: options.fill || options.color.fill(options.depth || 0),
       stroke: options.stroke || options.color.stroke(options.depth || 0),
-      strokeWidth: (options.spacing/4 || 1)
+      strokeWidth: (options.strokeWidth || 1)
     };
 
     if (pts === false) {
@@ -110,7 +110,8 @@ module.exports = {
 
     var label = options.label,
         content = <tspan {...center}>{label}</tspan>,
-        fontSize = options.fontSize || 20;
+        radius = options.r2 - options.r1,
+        fontSize = options.r1? radius/6 : radius/4;
 
     // multi-line label?
     if (label.indexOf(' ') !== -1) {

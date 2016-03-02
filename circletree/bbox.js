@@ -1,8 +1,5 @@
 var BBox = function() {
-  this.x = 999999;
-  this.y = 999999;
-  this.X = -999999;
-  this.Y = -999999;
+  this.reset();
   // width/height act as property, but secretly evaluate when accessed.
   Object.defineProperty(this, "w", { get() { return this.X - this.x; } });
   Object.defineProperty(this, "h", { get() { return this.Y - this.y; } });
@@ -39,6 +36,14 @@ BBox.prototype = {
       {x: this.X, y: this.Y},
       {x: this.x, y: this.Y}
     ];
+  },
+  reset: function(p) {
+    this.x = 999999;
+    this.y = 999999;
+    this.X = -999999;
+    this.Y = -999999;
+    if (p) { this.grow(p); }
+    return this;
   }
 };
 
