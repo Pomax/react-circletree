@@ -29,13 +29,36 @@ var App = React.createClass({
       <div>
         <CircleTree {...this.state} />
 
-        <form style={{float:'right'}}>
-          <fieldset><label>radius:</label><input type="range" min="0" max="200" step="1" value={this.state.radius} onChange={this.changeRadius}/></fieldset>
-          <fieldset><label>spacing:</label><input type="range" min="0" max="50" step="1" value={this.state.spacing} onChange={this.changeSpacing}/></fieldset>
-          <fieldset><label>strokeWidth:</label><input type="range" min="0" max="20" step="1" value={this.state.strokeWidth} onChange={this.changeStrokeWidth}/></fieldset>
-          <fieldset><label>leafRadius:</label><input type="range" min="0" max="20" step="1" value={this.state.leafRadius} onChange={this.changeLeafRadius}/></fieldset>
-          <fieldset><label>leafSpacing:</label><input type="range" min="0" max="20" step="1" value={this.state.leafSpacing} onChange={this.changeLeafSpacing}/></fieldset>
-        </form>
+
+        <div style={{float:'right'}}>
+          <h2>Change some settings:</h2>
+          <form>
+            <fieldset>
+              <label>radius:</label>
+              <input type="range" min="0" max="200" step="1" value={this.state.radius} onChange={this.changeRadius}/>
+            </fieldset>
+
+            <fieldset>
+              <label>spacing:</label>
+              <input type="range" min="0" max="50" step="1" value={this.state.spacing} onChange={this.changeSpacing}/>
+            </fieldset>
+
+            <fieldset>
+              <label>strokeWidth:</label>
+              <input type="range" min="0" max="20" step="1" value={this.state.strokeWidth} onChange={this.changeStrokeWidth}/>
+            </fieldset>
+
+            <fieldset>
+              <label>leafRadius:</label>
+              <input type="range" min="0" max="20" step="1" value={this.state.leafRadius} onChange={this.changeLeafRadius}/>
+            </fieldset>
+
+            <fieldset>
+              <label>leafSpacing:</label>
+              <input type="range" min="0" max="20" step="1" value={this.state.leafSpacing} onChange={this.changeLeafSpacing}/>
+            </fieldset>
+          </form>
+        </div>
       </div>
     );
   }
