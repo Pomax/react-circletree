@@ -7,7 +7,6 @@ var defaultProps = {
   r1: 0,
   r2: 1,
   spacing: 1,
-  strokeWidth: 1,
   // start and end angle
   start: 0,
   end: computer.tau,
@@ -41,14 +40,13 @@ var CircleSegment = React.createClass({
     this.highlights = {
       highlight: this.highlight,
       restore: this.restore,
-      toggle: this.toggle,
-      color: this.props.color
+      toggle: this.toggle
     };
 
     this.buildContent();
   },
 
-  componentDidUpdate: function(props, state) {
+  componentDidUpdate(props, state) {
     if(differ(props, this.props, defaultProps)) {
       this.buildContent();
     }
@@ -120,8 +118,6 @@ var CircleSegment = React.createClass({
             r1: r1,
             r2: r2,
             end: this.state.startAngle + this.state.angleDelta - this.state.angleOffset,
-            fill: this.props.color.fill(type),
-            stroke: this.props.color.stroke(type),
             label: type
           });
 
@@ -141,14 +137,13 @@ var CircleSegment = React.createClass({
 
   highlight() {
     var path = this.refs.path;
-    path.setAttribute("data-old-fill", path.getAttribute("fill"));
-    path.setAttribute("fill", this.props.color.fill('highlight'));
+    path.classList.add("highlight");
     if (this.props.highlight) { this.props.highlight(); }
   },
 
   restore() {
     var path = this.refs.path;
-    path.setAttribute("fill", path.getAttribute("data-old-fill"));
+    path.classList.remove("highlight");
     if (this.props.restore) { this.props.restore(); }
   },
 
@@ -173,9 +168,8 @@ var CircleSegment = React.createClass({
     p[3] = { x: p1.x + magicNumber*dx, y: p1.y + magicNumber*dy};
 
     return computer.getSVGPath(p, Object.assign({}, this.props, {
-      angleDelta: this.state.angleDelta,
-      fill: "transparent",
-      stroke: "transparent"
+      underlay: true,
+      angleDelta: this.state.angleDelta
     }), {
       onMouseEnter: this.slideOut
     });
@@ -193,7 +187,7 @@ var CircleSegment = React.createClass({
 
   render() {
     var path = this.getPath();
-    var offset = this.state.isOffset ? "translate(" + [this.state.offset.x, this.state.offset.y].join(',') + ")" : null;
+    var offset = null; //this.state.isOffset ? "translate(" + [this.state.offset.x, this.state.offset.y].join(',') + ")" : null;
     return (
       <g transform={offset} onMouseEnter={this.slideOut} onMouseLeave={this.slideBack}>
         { this.state.underlay }

@@ -1,0 +1,41 @@
+svg {
+  height: 80vh;
+}
+
+.segment {
+  fill: #F9F9F9;
+  stroke: black;
+}
+
+.segment.underlay {
+  fill: none!important;
+  stroke: none!important;
+}
+
+.segment.depth-0, .segment.base {
+  fill: #FFF;
+}
+
+.segment.depth-1 {
+  fill: #E0E0E0;
+}
+
+.segment.highlight:not(.leaf) {
+  fill: #FFFFF1;
+}
+
+.segment.leaf.cat.murder {
+  fill: red;
+}
+
+.segment.leaf.cat.retribution {
+  fill: limegreen;
+}
+
+.segment.leaf.cat.laziness {
+  fill: lightblue;
+}
+
+.segment.leaf.play.stuff {
+  fill: yellow;
+}

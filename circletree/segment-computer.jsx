@@ -72,15 +72,9 @@ module.exports = {
   },
 
   getSVGPath: function(pts, options, reactProps) {
-    var drawProps = {
-      fill: options.fill || options.color.fill(options.depth || 0),
-      stroke: options.stroke || options.color.stroke(options.depth || 0),
-      strokeWidth: (options.strokeWidth || 1)
-    };
-
     if (pts === false) {
-      var circleProps = Object.assign({}, drawProps, { r: options.r2 });
-      return <circle {...circleProps}/>;
+      var circleProps = Object.assign({}, { r: options.r2 });
+      return <circle className="base segment" {...circleProps}/>;
     }
 
     var p1 = pts[0],
@@ -98,9 +92,16 @@ module.exports = {
           'A', r2, r2, 0, sweep, ANTICLOCKWISE, p4.x, p4.y,
           'z'
         ].join(' '),
-        pathProps = Object.assign({}, drawProps, reactProps, { d:d });
+        pathProps = Object.assign({}, reactProps, { d:d }),
+        className = [
+          "segment",
+          options.leaf ? "leaf" : '',
+          options.underlay ? "underlay" : '',
+          options.label,
+          "depth-" + options.depth
+        ].join(' ');
 
-    return <path {...pathProps} />;
+    return <path className={className} {...pathProps} />;
   },
 
   getSVGLabel: function(options, center) {

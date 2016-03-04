@@ -2,33 +2,28 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var CircleTree = require('../circletree');
 var data = require('./cats');
-var color = require('./colors');
 
 var App = React.createClass({
 
   getInitialState() {
     return {
       data: data,
-      color: color,
       radius: 80,
       spacing: 3,
-      strokeWidth: 1,
       leafRadius: 7,
       leafSpacing: 2
     };
   },
 
-  changeRadius(evt) { this.setState({ radius: parseInt(evt.target.value) }); },
-  changeSpacing(evt) { this.setState({ spacing: parseInt(evt.target.value) }); },
-  changeStrokeWidth(evt) { this.setState({ strokeWidth: parseInt(evt.target.value) }); },
-  changeLeafRadius(evt) { this.setState({ leafRadius: parseInt(evt.target.value) }); },
+  changeRadius(evt)      { this.setState({ radius: parseInt(evt.target.value) });      },
+  changeSpacing(evt)     { this.setState({ spacing: parseInt(evt.target.value) });     },
+  changeLeafRadius(evt)  { this.setState({ leafRadius: parseInt(evt.target.value) });  },
   changeLeafSpacing(evt) { this.setState({ leafSpacing: parseInt(evt.target.value) }); },
 
   render: function() {
     return (
       <div>
         <CircleTree {...this.state} />
-
 
         <div style={{float:'right'}}>
           <h2>Change some settings:</h2>
@@ -41,11 +36,6 @@ var App = React.createClass({
             <fieldset>
               <label>spacing:</label>
               <input type="range" min="0" max="50" step="1" value={this.state.spacing} onChange={this.changeSpacing}/>
-            </fieldset>
-
-            <fieldset>
-              <label>strokeWidth:</label>
-              <input type="range" min="0" max="20" step="1" value={this.state.strokeWidth} onChange={this.changeStrokeWidth}/>
             </fieldset>
 
             <fieldset>

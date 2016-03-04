@@ -2,10 +2,10 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-  entry:  './index.js',
+  entry:  './exampleapp/App.jsx',
   output: {
     path: '.',
-    filename: 'circletree.js'
+    filename: 'exampleapp.js'
   },
   module: {
     loaders: [

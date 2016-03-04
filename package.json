@@ -2,10 +2,10 @@
   "name": "react-circletree",
   "version": "1.0.1",
   "description": "A circle tree component for React applications",
-  "main": "circletree.js",
+  "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "start": "webpack --config example.config.js"
+    "es5": "babel index.js > es5.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Pomax/react-circletree#readme",
   "devDependencies": {
+    "babel-cli": "^6.6.4",
     "babel-core": "^6.5.2",
     "babel-eslint": "^4.1.8",
     "babel-loader": "^6.2.2",

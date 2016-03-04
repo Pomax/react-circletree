@@ -7,7 +7,6 @@ var defaultProps = {
   data: {},
   radius: 80,
   spacing: 3,
-  strokeWidth: 1,
   leafRadius: 7,
   leafSpacing: 2
 };
@@ -29,7 +28,7 @@ var CircleTree = React.createClass({
     this.buildContent();
   },
 
-  componentDidUpdate: function(props, state) {
+  componentDidUpdate(props, state) {
     if(differ(props, this.props, defaultProps)) {
       this.buildContent();
     }
@@ -62,7 +61,7 @@ var CircleTree = React.createClass({
     var bbox = this.state.bbox;
     var viewBox = [bbox.x, bbox.y, bbox.w, bbox.h].join(' ');
     return (
-      <svg style={style} width={bbox.w} height={bbox.h} viewBox={viewBox}>
+      <svg className="circletree" style={style} width="auto" height="auto" viewBox={viewBox}>
       { this.state.segments }
       </svg>
     );
