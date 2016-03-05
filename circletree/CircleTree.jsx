@@ -1,7 +1,6 @@
 var React = require('react');
 var CircleSegment = require('./CircleSegment.jsx');
 var BBox = require('./bbox');
-var differ = require('./differ');
 
 var defaultProps = {
   data: {},
@@ -17,54 +16,40 @@ var CircleTree = React.createClass({
   },
 
   getInitialState() {
+    this.bbox = (new BBox()).grow({x: 0, y: 0});
     return {
       data: this.props.data,
       label: Object.keys(this.props.data)[0],
-      bbox: (new BBox()).grow({x: 0, y: 0})
+      bbox: this.bbox
     };
   },
 
-  componentWillMount() {
-    this.buildContent();
-  },
-
-  componentDidUpdate(props, state) {
-    if(differ(props, this.props, defaultProps)) {
-      this.buildContent();
+  updateBBox(bbox) {
+    this.bbox.expand(bbox);
+    if (this.isMounted()) {
+      this.setState({ bbox: this.bbox });
     }
   },
 
-  updateBBox(bbox) {
-    this.setState({ bbox: this.state.bbox.expand(bbox) });
-  },
-
-  buildContent() {
-    this.setState(Object.assign({
-      segments: this.formSegments()
-    }));
-  },
-
   formSegments() {
-    var label = this.state.label,
-        data = this.props.data[label],
-        props = Object.assign({}, this.props, {
+    var segmentProps = {
           r2: this.props.radius,
-          label: label,
-          data: data,
+          label: this.state.label,
+          data: this.props.data[this.state.label],
           updateBBox: this.updateBBox
-        });
+        },
+        props = Object.assign({}, this.props, segmentProps);
     return <CircleSegment {...props}/>;
   },
 
   render() {
-    var style = { overflow: "visible" };
     var bbox = this.state.bbox;
-    var viewBox = [bbox.x, bbox.y, bbox.w, bbox.h].join(' ');
-    return (
-      <svg className="circletree" style={style} width="auto" height="auto" viewBox={viewBox}>
-      { this.state.segments }
-      </svg>
-    );
+    var svgProps = {
+      className: "circletree",
+      style: { overflow: "visible" },
+      viewBox: [bbox.x, bbox.y, bbox.w, bbox.h].join(' ')
+    };
+    return <svg {...svgProps}>{ this.formSegments() }</svg>;
   }
 });
 

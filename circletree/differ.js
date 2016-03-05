@@ -1,4 +1,6 @@
 module.exports = function differ(o1,o2,props) {
+  if (!props) props = o2;
+
   if (typeof props === "object") {
     props = Object.keys(props);
   }

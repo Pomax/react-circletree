@@ -8,9 +8,7 @@ var SMALLARC = 0,
     sin = Math.sin,
     cos = Math.cos,
     pi = Math.PI,
-    tau = 2*pi,
-    random = Math.random,
-    sqrt = Math.sqrt;
+    tau = 2*pi;
 
 module.exports = {
 
@@ -29,8 +27,6 @@ module.exports = {
         a1 = s + angleDelta * id,
         a2 = a1 + angleDelta - angleOffset,
         center = {x:0, y:0, r: r2, a: 0},
-        nx = 0,
-        ny = 0,
         points = false;
 
     if (r1) {
@@ -39,13 +35,10 @@ module.exports = {
           ca2 = cos(a2),
           sa2 = sin(a2),
           cr = center.r = (r1+r2)/2,
-          ca = center.a = (a1+a2)/2,
-          dx = center.x = cr * cos(ca),
-          dy = center.y = cr * sin(ca),
-          m = sqrt(dx*dx+dy*dy);
+          ca = center.a = (a1+a2)/2;
 
-      nx = dx/m;
-      ny = dy/m;
+      center.x = cr * cos(ca);
+      center.y = cr * sin(ca);
 
       points = [
         { x: r1 * ca1, y: r1 * sa1, r: r1, a: a1 },
@@ -55,10 +48,6 @@ module.exports = {
       ];
     }
 
-    var offset = {
-      x: nx * 2 * options.spacing,
-      y: ny * 2 * options.spacing
-    };
 
     return {
       points: points,
@@ -66,7 +55,6 @@ module.exports = {
       angleDelta: angleDelta,
       angleOffset: angleOffset,
       center: center,
-      offset: offset,
       bbox: (new BBox()).grow(points)
     };
   },
@@ -98,7 +86,8 @@ module.exports = {
           options.leaf ? "leaf" : '',
           options.underlay ? "underlay" : '',
           options.label,
-          "depth-" + options.depth
+          "depth-" + options.depth,
+          options.highlight ? "highlight" : ''
         ].join(' ');
 
     return <path className={className} {...pathProps} />;
