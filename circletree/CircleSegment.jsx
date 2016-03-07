@@ -30,7 +30,7 @@ var CircleSegment = React.createClass({
     return tvalues;
   },
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentDidUpdate: function(nextProps, nextState) {
     if(differ(nextProps, this.props)) {
       this.setState(computer.getSegmentInformation(nextProps));
     }
