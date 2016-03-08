@@ -23,7 +23,7 @@ var CircleTree = require('react-circletree/es5');
 
 ## An example app
 
-See the [exampleapp](exampleapp/App.jsx) for an example
+See the [exampleapp](https://github.com/Pomax/react-circletree/blob/gh-pages/exampleapp/App.jsx) for an example
 
 ## API
 
@@ -34,9 +34,29 @@ See the [exampleapp](exampleapp/App.jsx) for an example
   leafRadius={number: width of each leaf segment, defaults to 7},
   leafSpacing={numbe: spacing between leaves in a leaf stack, defaults to 2}
   data={object: nested, keyed data. Leaf stacks encoded as arrays}
+  toggle={function: see note below, no default}
 />
 ```
-For an example of `data`, see [this object](exampleapp/cats.js).
+For an example of `data`, see [this object](https://github.com/Pomax/react-circletree/blob/gh-pages/exampleapp/cats.js).
+
+### passing a toggle() handler
+
+As segments in the circle tree can be clicked, you might want to do something based on that interaction. As such passing a `toggle` function as a property to the `<CircleTree>` component will give you a way to know what the user clicked:
+
+```
+  ...
+  toggle(labels) {
+    // labels is an array of all the applicable labels in the chain
+    // from the tree's root to the segment that was clicked by the
+    // user. As such, labels[0] is always the root label, and
+    // labels.slice(-1)[0] is always the segment the user clicked.
+  },
+  ...
+  render() {
+    return <CircleTree toggle={this.toggle}/>
+  },
+  ...
+```
 
 ## Demo
 
