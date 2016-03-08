@@ -44,8 +44,8 @@ var CircleTree = React.createClass({
   },
   toggle: function toggle(labels) {
     labels = labels || [];
-    if (this.props.toggle) {
-      this.props.toggle(labels);
+    if (this.props.onToggle) {
+      this.props.onToggle(labels);
     }
   },
   render: function render() {

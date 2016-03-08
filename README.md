@@ -34,18 +34,20 @@ See the [exampleapp](https://github.com/Pomax/react-circletree/blob/gh-pages/exa
   leafRadius={number: width of each leaf segment, defaults to 7},
   leafSpacing={numbe: spacing between leaves in a leaf stack, defaults to 2}
   data={object: nested, keyed data. Leaf stacks encoded as arrays}
-  toggle={function: see note below, no default}
+  onToggle={function: see note below, no default}
 />
 ```
 For an example of `data`, see [this object](https://github.com/Pomax/react-circletree/blob/gh-pages/exampleapp/cats.js).
 
-### passing a toggle() handler
+### passing a onToggle() handler
 
-As segments in the circle tree can be clicked, you might want to do something based on that interaction. As such passing a `toggle` function as a property to the `<CircleTree>` component will give you a way to know what the user clicked:
+As segments in the circle tree can be clicked, you might want to do something based on that interaction.
+
+As such, passing a `onToggle` function as a property to the `<CircleTree>` component will give you a way to know what the user clicked:
 
 ```
   ...
-  toggle(labels) {
+  onToggle(labels) {
     // labels is an array of all the applicable labels in the chain
     // from the tree's root to the segment that was clicked by the
     // user. As such, labels[0] is always the root label, and
@@ -53,7 +55,7 @@ As segments in the circle tree can be clicked, you might want to do something ba
   },
   ...
   render() {
-    return <CircleTree toggle={this.toggle}/>
+    return <CircleTree onToggle={this.onToggle}/>
   },
   ...
 ```
