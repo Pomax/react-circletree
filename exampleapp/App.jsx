@@ -20,12 +20,12 @@ var App = React.createClass({
   changeLeafRadius(evt)  { this.setState({ leafRadius: parseInt(evt.target.value) });  },
   changeLeafSpacing(evt) { this.setState({ leafSpacing: parseInt(evt.target.value) }); },
 
-  toggle(labels) { console.log(labels); },
+  onToggle(labels) { console.log(labels); },
 
   render() {
     return (
       <div>
-        <CircleTree {...this.state} toggle={this.toggle} />
+        <CircleTree {...this.state} onToggle={this.onToggle} />
 
         <div style={{float:'right'}}>
           <h2>Change some settings:</h2>
