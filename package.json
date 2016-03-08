@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "es5": "babel index.js > es5.js"
+    "es5": "rimraf es5 && mkdirp es5 && babel circletree --out-dir es5 && npm run es5:fixreqext",
+    "es5:fixreqext": "node fixes5",
+    "start": "npm run build && npm run es5"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,9 @@
     "url": "https://github.com/Pomax/react-circletree/issues"
   },
   "homepage": "https://github.com/Pomax/react-circletree#readme",
+  "dependencies": {
+    "react": "^0.14.7"
+  },
   "devDependencies": {
     "babel-cli": "^6.6.4",
     "babel-core": "^6.5.2",
@@ -34,8 +39,9 @@
     "eslint": "^2.1.0",
     "eslint-loader": "^1.2.1",
     "eslint-plugin-react": "^3.16.1",
-    "react": "^0.14.7",
+    "mkdirp": "^0.5.1",
     "react-dom": "^0.14.7",
+    "rimraf": "^2.5.2",
     "uglify-loader": "^1.3.0",
     "webpack": "^1.12.9"
   }

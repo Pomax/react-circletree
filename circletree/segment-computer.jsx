@@ -25,7 +25,7 @@ module.exports = {
         angleOffset = options.spacing/r2,
         id = options.id,
         a1 = s + angleDelta * id,
-        a2 = a1 + angleDelta - angleOffset,
+        a2 = a1 + angleDelta - angleOffset/2,
         center = {x:0, y:0, r: r2, a: 0},
         points = false;
 

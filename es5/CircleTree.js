@@ -1,5 +1,7 @@
+'use strict';
+
 var React = require('react');
-var CircleSegment = require('./CircleSegment.jsx');
+var CircleSegment = require('./CircleSegment.js');
 var BBox = require('./bbox');
 
 var defaultProps = {
@@ -11,53 +13,53 @@ var defaultProps = {
 };
 
 var CircleTree = React.createClass({
-  getDefaultProps() {
+  displayName: 'CircleTree',
+  getDefaultProps: function getDefaultProps() {
     return defaultProps;
   },
-
-  getInitialState() {
-    this.bbox = (new BBox()).grow({x: 0, y: 0});
+  getInitialState: function getInitialState() {
+    this.bbox = new BBox().grow({ x: 0, y: 0 });
     return {
       data: this.props.data,
       label: Object.keys(this.props.data)[0],
       bbox: this.bbox
     };
   },
-
-  updateBBox(bbox) {
+  updateBBox: function updateBBox(bbox) {
     this.bbox.expand(bbox);
     if (this.isMounted()) {
       this.setState({ bbox: this.bbox });
     }
   },
-
-  formSegments() {
+  formSegments: function formSegments() {
     var segmentProps = {
-          r2: this.props.radius,
-          label: this.state.label,
-          data: this.props.data[this.state.label],
-          updateBBox: this.updateBBox,
-          toggle: this.toggle
-        },
+      r2: this.props.radius,
+      label: this.state.label,
+      data: this.props.data[this.state.label],
+      updateBBox: this.updateBBox,
+      toggle: this.toggle
+    },
         props = Object.assign({}, this.props, segmentProps);
-    return <CircleSegment {...props}/>;
+    return React.createElement(CircleSegment, props);
   },
-
-  toggle(labels) {
+  toggle: function toggle(labels) {
     labels = labels || [];
     if (this.props.toggle) {
       this.props.toggle(labels);
     }
   },
-
-  render() {
+  render: function render() {
     var bbox = this.state.bbox;
     var svgProps = {
       className: "circletree",
       style: { overflow: "visible" },
       viewBox: [bbox.x, bbox.y, bbox.w, bbox.h].join(' ')
     };
-    return <svg {...svgProps}>{ this.formSegments() }</svg>;
+    return React.createElement(
+      'svg',
+      svgProps,
+      this.formSegments()
+    );
   }
 });
 

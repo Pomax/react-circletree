@@ -41,7 +41,7 @@ module.exports = function generateSlice(label, d1, d2, alpha, delta, color) {
     <g>
       <path d={path} fill={color || "rgba(0,0,0,"+random()+")"} onMouseOver={mouseover} onMouseOut={mouseout}>
         <text transform={transform} fontFamily={"verdana"} textAnchor={"middle"} fontSize={40}>{textContent}</text>
-      </p>
+      </path>
     </g>
   );
 };

@@ -3,6 +3,7 @@ var computer = require('./segment-computer.jsx');
 var differ = require('./differ');
 
 var defaultProps = {
+  label: '',
   // inner and outer radius, and segment padding
   r1: 0,
   r2: 1,
@@ -30,7 +31,7 @@ var CircleSegment = React.createClass({
     return tvalues;
   },
 
-  componentDidUpdate: function(nextProps, nextState) {
+  componentWillUpdate: function(nextProps, nextState) {
     if(differ(nextProps, this.props)) {
       this.setState(computer.getSegmentInformation(nextProps));
     }
@@ -65,9 +66,11 @@ var CircleSegment = React.createClass({
     if (this.props.restore) { this.props.restore(); }
   },
 
-  toggle() {
-    console.log(this.props.label);
-    if (this.props.toggle) { this.props.toggle(); }
+  toggle(labels) {
+    labels = labels || [];
+    if (this.props.toggle) {
+      this.props.toggle([this.props.label].concat(labels));
+    }
   },
 
   render() {
@@ -87,7 +90,7 @@ var CircleSegment = React.createClass({
     }),{
       onMouseEnter: this.highlight,
       onMouseLeave: this.restore,
-      onClick: this.toggle
+      onClick: () => { this.toggle(); }
     });
   },
 
