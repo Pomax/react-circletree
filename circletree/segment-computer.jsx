@@ -61,7 +61,7 @@ module.exports = {
 
   getSVGPath: function(pts, options, reactProps) {
     if (pts === false) {
-      var circleProps = Object.assign({}, { r: options.r2 });
+      var circleProps = Object.assign({}, reactProps, { r: options.r2 });
       return <circle className="base segment" {...circleProps}/>;
     }
 
