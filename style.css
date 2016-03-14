@@ -20,7 +20,7 @@ svg {
   fill: #E0E0E0;
 }
 
-.segment.highlight:not(.leaf) {
+.segment.highlight:not(.leaf):not(.base) {
   fill: #FFFFF1;
 }
 
