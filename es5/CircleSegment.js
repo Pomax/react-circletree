@@ -21,7 +21,9 @@ var defaultProps = {
   total: 1,
   // leaf settings
   leafRadius: 7,
-  leafSpacing: 2
+  leafSpacing: 2,
+  // optional key:value object for filtering which leaves to _not_ render
+  filter: {}
 };
 
 var CircleSegment = React.createClass({
@@ -147,7 +149,9 @@ var CircleSegment = React.createClass({
       updateBBox: this.updateBBox
     };
 
-    return this.props.data.map(function (type, pos) {
+    return this.props.data.filter(function (type) {
+      return !_this4.props.filter[type];
+    }).map(function (type, pos) {
       var radius = _this4.props.r2,
           leafRadius = _this4.props.leafRadius,
           leafSpacing = _this4.props.leafSpacing,
