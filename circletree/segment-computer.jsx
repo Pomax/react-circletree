@@ -61,7 +61,7 @@ module.exports = {
 
   getSVGPath: function(pts, options, reactProps) {
     if (pts === false) {
-      var className = [
+      let className = [
             "segment",
             "base",
             "depth-0",
