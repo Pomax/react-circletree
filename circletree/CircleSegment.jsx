@@ -39,7 +39,7 @@ var CircleSegment = React.createClass({
     return tvalues;
   },
 
-  componentWillUpdate: function(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     if(differ(nextProps, this.props)) {
       this.setState(computer.getSegmentInformation(nextProps));
     }
@@ -52,7 +52,6 @@ var CircleSegment = React.createClass({
       toggle: this.toggle,
       activate: this.activate
     };
-    dispatcher.on('react-circletree:click', this.onActivate);
   },
 
   componentWillUnmount() {
@@ -61,6 +60,7 @@ var CircleSegment = React.createClass({
 
   componentDidMount() {
     this.props.updateBBox(this.state.bbox);
+    dispatcher.on('react-circletree:click', this.onActivate);
   },
 
   updateBBox(bbox) {
