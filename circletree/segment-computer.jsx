@@ -1,5 +1,6 @@
 var React = require('react');
 var BBox = require('./bbox');
+var assign = require('react/lib/Object.assign');
 
 var SMALLARC = 0,
     LARGEARC = 1,
@@ -68,7 +69,7 @@ module.exports = {
             options.label,
             options.highlight ? "highlight" : ''
           ].join(' '),
-          circleProps = Object.assign({}, reactProps, {
+          circleProps = assign({}, reactProps, {
             r: options.r2,
             className: className
           });
@@ -90,7 +91,7 @@ module.exports = {
           'A', r2, r2, 0, sweep, ANTICLOCKWISE, p4.x, p4.y,
           'z'
         ].join(' '),
-        pathProps = Object.assign({}, reactProps, { d:d }),
+        pathProps = assign({}, reactProps, { d:d }),
         className = [
           "segment",
           options.leaf ? "leaf" : '',

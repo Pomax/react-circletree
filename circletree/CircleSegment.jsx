@@ -1,6 +1,7 @@
 var React = require('react');
 var computer = require('./segment-computer.jsx');
 var differ = require('./differ');
+var assign = require('react/lib/Object.assign');
 
 var defaultProps = {
   label: '',
@@ -86,7 +87,7 @@ var CircleSegment = React.createClass({
   },
 
   getPath(tvalues) {
-    return computer.getSVGPath(tvalues.points, Object.assign({}, this.props, {
+    return computer.getSVGPath(tvalues.points, assign({}, this.props, {
       angleDelta: tvalues.angleDelta,
       highlight: tvalues.highlight
     }),{
@@ -112,7 +113,7 @@ var CircleSegment = React.createClass({
         nr2 = nr1 + (this.props.r2 - this.props.r1),
         keys = Object.keys(data),
         total = keys.length,
-        props = Object.assign({}, this.props, {
+        props = assign({}, this.props, {
           total: total,
           r1: nr1,
           r2: nr2,
@@ -125,7 +126,7 @@ var CircleSegment = React.createClass({
 
     // generate the set of child segments
     return keys.map( (label, position) => {
-      var childProps = Object.assign({}, props, this.highlightFunctions, {
+      var childProps = assign({}, props, this.highlightFunctions, {
         label: label,
         id: position,
         data: data[label]
@@ -149,7 +150,7 @@ var CircleSegment = React.createClass({
           r1 = radius + spacing + pos * (leafSpacing + leafRadius),
           r2 = r1 + leafRadius,
 
-          leafProps = Object.assign({}, baseProps, this.highlightFunctions, {
+          leafProps = assign({}, baseProps, this.highlightFunctions, {
             r1: r1,
             r2: r2,
             end: tvalues.startAngle + tvalues.angleDelta - tvalues.angleOffset,
