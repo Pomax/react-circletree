@@ -2,6 +2,8 @@ var React = require('react');
 var computer = require('./segment-computer.jsx');
 var differ = require('./differ');
 var assign = require('react/lib/Object.assign');
+var dispatcher = require('./dispatcher');
+var classnames = require('classnames');
 
 var defaultProps = {
   label: '',
@@ -31,6 +33,9 @@ var CircleSegment = React.createClass({
   getInitialState() {
     var tvalues = computer.getSegmentInformation(this.props);
     tvalues.highlight = false;
+    if (this.props.depth === 0) {
+      tvalues.status = "active primary";
+    }
     return tvalues;
   },
 
@@ -44,8 +49,14 @@ var CircleSegment = React.createClass({
     this.highlightFunctions = {
       highlight: this.highlight,
       restore: this.restore,
-      toggle: this.toggle
+      toggle: this.toggle,
+      activate: this.activate
     };
+    dispatcher.on('react-circletree:click', this.onActivate);
+  },
+
+  componentWillUnmount() {
+    dispatcher.off('react-circletree:click', this.onActivate);
   },
 
   componentDidMount() {
@@ -76,9 +87,26 @@ var CircleSegment = React.createClass({
     }
   },
 
+  onActivate(e) {
+    this.setState({
+      status: false
+    }, () => {
+      if (e.detail.origin === this) {
+        this.activate("active primary");
+      }
+    });
+  },
+
+  activate(status) {
+    this.setState({ status });
+    if (this.props.activate) {
+      this.props.activate("active");
+    }
+  },
+
   render() {
     return (
-      <g>
+      <g className={classnames(this.state.status, this.props.leaf ? "leaf" : "")}>
         { this.getPath(this.state) }
         { this.getLabel(this.state) }
         { this.props.leaf? null : this.setupChildren(this.state) }
@@ -93,7 +121,10 @@ var CircleSegment = React.createClass({
     }),{
       onMouseEnter: this.highlight,
       onMouseLeave: this.restore,
-      onClick: () => { this.toggle(); }
+      onClick: () => {
+        dispatcher.dispatch('react-circletree:click', {origin: this});
+        this.toggle();
+      }
     });
   },
 

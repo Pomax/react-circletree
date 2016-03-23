@@ -6,6 +6,8 @@ var React = require('react');
 var computer = require('./segment-computer.js');
 var differ = require('./differ');
 var assign = require('react/lib/Object.assign');
+var dispatcher = require('./dispatcher');
+var classnames = require('classnames');
 
 var defaultProps = {
   label: '',
@@ -35,6 +37,9 @@ var CircleSegment = React.createClass({
   getInitialState: function getInitialState() {
     var tvalues = computer.getSegmentInformation(this.props);
     tvalues.highlight = false;
+    if (this.props.depth === 0) {
+      tvalues.status = "active primary";
+    }
     return tvalues;
   },
 
@@ -49,8 +54,13 @@ var CircleSegment = React.createClass({
     this.highlightFunctions = {
       highlight: this.highlight,
       restore: this.restore,
-      toggle: this.toggle
+      toggle: this.toggle,
+      activate: this.activate
     };
+    dispatcher.on('react-circletree:click', this.onActivate);
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    dispatcher.off('react-circletree:click', this.onActivate);
   },
   componentDidMount: function componentDidMount() {
     this.props.updateBBox(this.state.bbox);
@@ -81,17 +91,34 @@ var CircleSegment = React.createClass({
       this.props.toggle([this.props.label].concat(labels));
     }
   },
+  onActivate: function onActivate(e) {
+    var _this2 = this;
+
+    this.setState({
+      status: false
+    }, function () {
+      if (e.detail.origin === _this2) {
+        _this2.activate("active primary");
+      }
+    });
+  },
+  activate: function activate(status) {
+    this.setState({ status: status });
+    if (this.props.activate) {
+      this.props.activate("active");
+    }
+  },
   render: function render() {
     return React.createElement(
       'g',
-      null,
+      { className: classnames(this.state.status, this.props.leaf ? "leaf" : "") },
       this.getPath(this.state),
       this.getLabel(this.state),
       this.props.leaf ? null : this.setupChildren(this.state)
     );
   },
   getPath: function getPath(tvalues) {
-    var _this2 = this;
+    var _this3 = this;
 
     return computer.getSVGPath(tvalues.points, assign({}, this.props, {
       angleDelta: tvalues.angleDelta,
@@ -100,7 +127,8 @@ var CircleSegment = React.createClass({
       onMouseEnter: this.highlight,
       onMouseLeave: this.restore,
       onClick: function onClick() {
-        _this2.toggle();
+        dispatcher.dispatch('react-circletree:click', { origin: _this3 });
+        _this3.toggle();
       }
     });
   },
@@ -108,7 +136,7 @@ var CircleSegment = React.createClass({
     return computer.getSVGLabel(this.props, tvalues.center);
   },
   setupChildren: function setupChildren(tvalues) {
-    var _this3 = this;
+    var _this4 = this;
 
     var data = this.props.data;
 
@@ -133,7 +161,7 @@ var CircleSegment = React.createClass({
 
     // generate the set of child segments
     return keys.map(function (label, position) {
-      var childProps = assign({}, props, _this3.highlightFunctions, {
+      var childProps = assign({}, props, _this4.highlightFunctions, {
         label: label,
         id: position,
         data: data[label]
@@ -142,7 +170,7 @@ var CircleSegment = React.createClass({
     });
   },
   formLeaves: function formLeaves(tvalues) {
-    var _this4 = this;
+    var _this5 = this;
 
     var baseProps = {
       leaf: true,
@@ -151,15 +179,15 @@ var CircleSegment = React.createClass({
     };
 
     return this.props.data.filter(function (type) {
-      return !_this4.props.filter[type];
+      return !_this5.props.filter[type];
     }).map(function (type, pos) {
-      var radius = _this4.props.r2,
-          leafRadius = _this4.props.leafRadius,
-          leafSpacing = _this4.props.leafSpacing,
-          spacing = _this4.props.spacing,
+      var radius = _this5.props.r2,
+          leafRadius = _this5.props.leafRadius,
+          leafSpacing = _this5.props.leafSpacing,
+          spacing = _this5.props.spacing,
           r1 = radius + spacing + pos * (leafSpacing + leafRadius),
           r2 = r1 + leafRadius,
-          leafProps = assign({}, baseProps, _this4.highlightFunctions, {
+          leafProps = assign({}, baseProps, _this5.highlightFunctions, {
         r1: r1,
         r2: r2,
         end: tvalues.startAngle + tvalues.angleDelta - tvalues.angleOffset,

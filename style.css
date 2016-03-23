@@ -39,3 +39,15 @@ svg {
 .segment.leaf.play.stuff {
   fill: yellow;
 }
+
+.circletree g {
+  opacity: .3;
+}
+
+.circletree g.primary,
+.circletree g.primary g,
+.circletree g.primary .leaf,
+.circletree g.active,
+.circletree g:not(.active) g {
+  opacity: 1;
+}
