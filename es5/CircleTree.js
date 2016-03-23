@@ -3,6 +3,7 @@
 var React = require('react');
 var CircleSegment = require('./CircleSegment.js');
 var BBox = require('./bbox');
+var assign = require('react/lib/Object.assign');
 
 var defaultProps = {
   data: {},
@@ -39,7 +40,7 @@ var CircleTree = React.createClass({
       updateBBox: this.updateBBox,
       toggle: this.toggle
     },
-        props = Object.assign({}, this.props, segmentProps);
+        props = assign({}, this.props, segmentProps);
     return React.createElement(CircleSegment, props);
   },
   toggle: function toggle(labels) {

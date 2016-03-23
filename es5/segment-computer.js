@@ -4,6 +4,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 var BBox = require('./bbox');
+var assign = require('react/lib/Object.assign');
 
 var SMALLARC = 0,
     LARGEARC = 1,
@@ -60,7 +61,7 @@ module.exports = {
   getSVGPath: function getSVGPath(pts, options, reactProps) {
     if (pts === false) {
       var _className = ["segment", "base", "depth-0", options.label, options.highlight ? "highlight" : ''].join(' '),
-          circleProps = Object.assign({}, reactProps, {
+          circleProps = assign({}, reactProps, {
         r: options.r2,
         className: _className
       });
@@ -76,7 +77,7 @@ module.exports = {
         angleDelta = options.angleDelta,
         sweep = angleDelta < pi ? SMALLARC : LARGEARC,
         d = ['M', p1.x, p1.y, 'A', r1, r1, 0, sweep, CLOCKWISE, p2.x, p2.y, 'L', p3.x, p3.y, 'A', r2, r2, 0, sweep, ANTICLOCKWISE, p4.x, p4.y, 'z'].join(' '),
-        pathProps = Object.assign({}, reactProps, { d: d }),
+        pathProps = assign({}, reactProps, { d: d }),
         className = ["segment", options.leaf ? "leaf" : '', options.underlay ? "underlay" : '', options.label, "depth-" + options.depth, options.highlight ? "highlight" : ''].join(' ');
 
     return React.createElement('path', _extends({ className: className }, pathProps));
