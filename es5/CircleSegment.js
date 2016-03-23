@@ -42,14 +42,11 @@ var CircleSegment = React.createClass({
     }
     return tvalues;
   },
-
-
   componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
     if (differ(nextProps, this.props)) {
       this.setState(computer.getSegmentInformation(nextProps));
     }
   },
-
   componentWillMount: function componentWillMount() {
     this.highlightFunctions = {
       highlight: this.highlight,
@@ -57,13 +54,13 @@ var CircleSegment = React.createClass({
       toggle: this.toggle,
       activate: this.activate
     };
-    dispatcher.on('react-circletree:click', this.onActivate);
   },
   componentWillUnmount: function componentWillUnmount() {
     dispatcher.off('react-circletree:click', this.onActivate);
   },
   componentDidMount: function componentDidMount() {
     this.props.updateBBox(this.state.bbox);
+    dispatcher.on('react-circletree:click', this.onActivate);
   },
   updateBBox: function updateBBox(bbox) {
     var _this = this;
