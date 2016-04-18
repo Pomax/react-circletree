@@ -1,6 +1,6 @@
 {
   "name": "react-circletree",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "A circle tree component for React applications",
   "main": "index.js",
   "scripts": {
