@@ -13,10 +13,11 @@ var SMALLARC = 0,
     sin = Math.sin,
     cos = Math.cos,
     pi = Math.PI,
+    kappa = pi / 2,
     tau = 2 * pi;
 
 module.exports = {
-
+  kappa: kappa,
   pi: pi,
   tau: tau,
 

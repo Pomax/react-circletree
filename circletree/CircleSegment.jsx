@@ -12,8 +12,8 @@ var defaultProps = {
   r2: 1,
   spacing: 1,
   // start and end angle
-  start: 0,
-  end: computer.tau,
+  start: -computer.kappa,
+  end: -computer.kappa + computer.tau,
   // total number of segments, and id of this segment
   depth: 0,
   id: 0,

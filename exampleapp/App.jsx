@@ -9,12 +9,31 @@ var App = React.createClass({
   getInitialState() {
     return {
       data: data,
+      start: -Math.PI/2,
+      delta: 2*Math.PI,
+      end: 2*Math.PI - Math.PI/2,
       radius: 80,
       spacing: 3,
       leafRadius: 7,
       leafSpacing: 2,
       filter: {}
     };
+  },
+
+  changeDelta(evt) {
+    var d = parseFloat(evt.target.value);
+    this.setState({
+      delta: d,
+      end: this.state.start + d
+    });
+  },
+
+  changeAngle(evt)       {
+    var s = parseFloat(evt.target.value);
+    this.setState({
+      start: s,
+      end: s + this.state.delta
+    });
   },
 
   changeRadius(evt)      { this.setState({ radius: parseInt(evt.target.value) });      },
@@ -55,6 +74,17 @@ var App = React.createClass({
         <div style={{float:'right'}}>
           <form>
             <h2>Change some settings:</h2>
+
+            <fieldset>
+              <label>start:</label>
+              <input type="range" min={-Math.PI/2} max={2*Math.PI - Math.PI/2} step="0.1" value={this.state.start} onChange={this.changeAngle}/>
+            </fieldset>
+
+            <fieldset>
+              <label>delta:</label>
+              <input type="range" min="0" max={2*Math.PI} step="0.1" value={this.state.delta} onChange={this.changeDelta}/>
+            </fieldset>
+
             <fieldset>
               <label>radius:</label>
               <input type="range" min="0" max="200" step="1" value={this.state.radius} onChange={this.changeRadius}/>

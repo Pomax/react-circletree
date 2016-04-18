@@ -34,6 +34,8 @@ var CircleTree = React.createClass({
   },
   formSegments: function formSegments() {
     var segmentProps = {
+      start: this.props.start,
+      end: this.props.end,
       r2: this.props.radius,
       label: this.state.label,
       data: this.props.data[this.state.label],
